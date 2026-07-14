@@ -1,0 +1,662 @@
+# REPLIT AI MASTER PROMPT
+
+You are an expert Full-Stack Software Engineer, UI/UX Designer, DevOps Engineer, Database Architect, Security Engineer, and AI Integration Specialist.
+
+Your task is to build a **production-ready NGO website** for:
+
+# Karuna Dham Foundation
+
+**Mission:** Compassion, Humanity, Care & Service
+
+The NGO works for:
+
+* Old Age Homes
+* Orphan Children
+* Education
+* Food Distribution
+* Healthcare
+* Women Empowerment
+* Animal Welfare
+* Disaster Relief
+* Blood Donation
+* Environment Protection
+* Rural Development
+
+---
+
+## IMPORTANT INSTRUCTIONS
+
+This project must run **completely inside Replit** without breaking.
+
+Do NOT generate placeholder pages or fake functionality.
+
+Every feature must be fully connected.
+
+If something requires configuration, create the configuration automatically.
+
+Install every required package.
+
+Generate a complete folder structure.
+
+Write clean reusable code.
+
+No syntax errors.
+
+No build errors.
+
+No missing imports.
+
+No missing dependencies.
+
+Automatically fix errors if they appear.
+
+If a package changes version, use the latest stable version.
+
+Never stop in the middle of development.
+
+Keep generating until the entire website is completed.
+
+---
+
+# Tech Stack
+
+Frontend
+
+* Next.js (latest stable)
+* React
+* TypeScript
+* Tailwind CSS
+* Framer Motion
+* GSAP
+* Three.js
+* React Three Fiber
+* Drei
+* Shadcn UI
+* Lucide Icons
+
+Backend
+
+* Supabase
+
+Use
+
+* Authentication
+* Database
+* Storage
+* Realtime
+* Edge Functions
+
+Payments
+
+* Razorpay
+* Stripe
+* UPI QR Donations
+
+Deployment Ready
+
+* Replit Deployments
+* Netlify
+* Vercel
+
+---
+
+# UI DESIGN
+
+The website should look like a premium international NGO.
+
+Inspiration:
+
+* Apple
+* Tesla
+* UNICEF
+* World Vision
+* WHO
+* GiveIndia
+
+Style
+
+* 3D
+* Cinematic
+* Glassmorphism
+* Smooth Scroll
+* Floating Objects
+* Soft Shadows
+* Animated Background
+* Premium Cards
+* Interactive Elements
+
+Color Palette
+
+Primary
+#0B8F62
+
+Secondary
+#FFD166
+
+Accent
+#16A34A
+
+Background
+#F8FBF9
+
+Text
+#111827
+
+---
+
+# LANDING PAGE
+
+Create a beautiful hero section.
+
+Include
+
+Animated 3D Earth
+
+Helping Hands
+
+Flying Birds
+
+Animated Trees
+
+Particles
+
+Light Rays
+
+Clouds
+
+Mouse Interaction
+
+Smooth Scroll
+
+Large Headline
+
+"Together We Bring Hope"
+
+Subtitle
+
+Donate Now Button
+
+Become Volunteer Button
+
+Watch Our Mission Button
+
+Animated Statistics
+
+Meals Served
+
+Children Helped
+
+Old Age Residents
+
+Volunteers
+
+Medical Camps
+
+Trees Planted
+
+---
+
+# 3D EXPERIENCE
+
+Create multiple Three.js scenes.
+
+Old Age Home
+
+School
+
+Hospital
+
+Food Distribution
+
+Animal Rescue
+
+Tree Plantation
+
+Each scene should animate when hovered.
+
+Camera movement.
+
+Lighting effects.
+
+Floating animation.
+
+---
+
+# ABOUT
+
+Mission
+
+Vision
+
+Founder
+
+Journey Timeline
+
+Core Values
+
+Awards
+
+Transparency
+
+Impact
+
+---
+
+# PROGRAMS
+
+Old Age Home
+
+Education
+
+Medical
+
+Food
+
+Women Empowerment
+
+Disaster Relief
+
+Animal Welfare
+
+Blood Donation
+
+Environment
+
+Each card should contain
+
+Image
+
+Description
+
+Donate
+
+Read More
+
+---
+
+# DONATION SYSTEM
+
+Beautiful donation page.
+
+Choose Amount
+
+₹500
+
+₹1000
+
+₹2500
+
+₹5000
+
+Custom Amount
+
+Recurring Donation
+
+One Time Donation
+
+Stripe
+
+Razorpay
+
+UPI QR
+
+Donation Receipt
+
+Download PDF
+
+Email Receipt
+
+Donation History
+
+Anonymous Donation
+
+Campaign Progress
+
+Live Donation Counter
+
+---
+
+# VOLUNTEER SYSTEM
+
+Registration
+
+Login
+
+Profile
+
+Skills
+
+Availability
+
+Resume Upload
+
+Certificates
+
+Volunteer Dashboard
+
+---
+
+# EVENTS
+
+Upcoming Events
+
+Calendar
+
+Countdown
+
+Google Maps
+
+Seats Left
+
+Registration
+
+---
+
+# BLOG
+
+CMS
+
+Categories
+
+Search
+
+Comments
+
+Tags
+
+Pagination
+
+Share
+
+---
+
+# GALLERY
+
+Photos
+
+Videos
+
+Lightbox
+
+Categories
+
+Hover Animation
+
+Lazy Loading
+
+---
+
+# SUCCESS STORIES
+
+Slider
+
+Testimonials
+
+Beneficiaries
+
+Volunteers
+
+Donors
+
+---
+
+# CONTACT
+
+Google Maps
+
+WhatsApp
+
+Email
+
+Phone
+
+Contact Form
+
+Live Chat
+
+FAQ
+
+---
+
+# USER DASHBOARD
+
+Profile
+
+Donation History
+
+Receipts
+
+Volunteer Status
+
+Notifications
+
+Certificates
+
+Bookmarks
+
+---
+
+# ADMIN PANEL
+
+Secure Authentication
+
+Analytics Dashboard
+
+Manage Donations
+
+Manage Users
+
+Manage Volunteers
+
+Manage Campaigns
+
+Manage Blogs
+
+Manage Events
+
+Manage Gallery
+
+Manage Team
+
+Manage Testimonials
+
+Manage Reports
+
+Export CSV
+
+Export PDF
+
+Role-Based Access (Admin, Editor, Volunteer)
+
+---
+
+# NGO FEATURES
+
+80G Certificate Section
+
+CSR Partnership
+
+Sponsors
+
+Financial Reports
+
+Annual Reports
+
+Audit Reports
+
+Impact Reports
+
+Volunteer Certificates
+
+Partner Logos
+
+Newsletter
+
+---
+
+# AI FEATURES
+
+AI Chat Assistant
+
+Impact Report Generator
+
+Automatic Email Replies
+
+Smart Search
+
+---
+
+# ACCESSIBILITY
+
+WCAG Compliance
+
+Keyboard Navigation
+
+High Contrast Mode
+
+Dark Mode
+
+Large Text Mode
+
+---
+
+# SEO
+
+Dynamic Metadata
+
+Open Graph
+
+Twitter Cards
+
+JSON-LD Schema
+
+Sitemap
+
+Robots.txt
+
+Image Optimization
+
+---
+
+# PERFORMANCE
+
+Lighthouse Score 95+
+
+Lazy Loading
+
+Server Components
+
+Code Splitting
+
+Optimized Assets
+
+Caching
+
+---
+
+# DATABASE TABLES
+
+Users
+
+Donations
+
+Campaigns
+
+Payments
+
+Volunteers
+
+Blogs
+
+Events
+
+Gallery
+
+Testimonials
+
+Messages
+
+Certificates
+
+Reports
+
+---
+
+# SECURITY
+
+Rate Limiting
+
+CSRF Protection
+
+Input Validation
+
+SQL Injection Protection
+
+XSS Protection
+
+Authentication Middleware
+
+Encrypted Secrets
+
+Secure API Routes
+
+---
+
+# REPLIT REQUIREMENTS
+
+Automatically:
+
+* Install dependencies
+* Configure environment variables
+* Create `.env.example`
+* Create `README.md`
+* Configure Tailwind
+* Configure TypeScript
+* Configure ESLint
+* Configure Prettier
+* Configure Supabase
+* Configure Stripe
+* Configure Razorpay
+* Configure Storage
+* Configure Build Scripts
+* Configure Production Deployment
+
+If an error occurs during development:
+
+* Detect it
+* Fix it automatically
+* Continue building
+
+Never stop because of one error.
+
+---
+
+# FINAL OUTPUT
+
+Generate the complete production-ready application.
+
+The project must be deployable immediately from Replit.
+
+Every page must work.
+
+Every button must work.
+
+Every form must save data.
+
+Every API must function.
+
+Every authentication flow must work.
+
+Every payment gateway must work.
+
+Every animation must be responsive.
+
+No dummy pages.
+
+No placeholder content.
+
+No unfinished code.
+
+No TODO comments.
+
+Generate all code until the application is 100% complete and launch-ready for Karuna Dham Foundation.

@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "Karuna Dham Foundation"
+version = "1.0.0"
+id = "artifacts/karuna-dham"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23754
+
+[services.development]
+run = "pnpm --filter @workspace/karuna-dham run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/karuna-dham", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/karuna-dham/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23754"
+BASE_PATH = "/"

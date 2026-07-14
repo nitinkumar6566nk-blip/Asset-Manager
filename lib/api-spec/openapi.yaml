@@ -3,20 +3,44 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Karuna Dham Foundation API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: stats
+    description: Site-wide statistics
+  - name: campaigns
+    description: Donation campaigns
+  - name: donations
+    description: Donation records
+  - name: programs
+    description: NGO programs
+  - name: blogs
+    description: Blog posts
+  - name: events
+    description: Events
+  - name: gallery
+    description: Gallery media
+  - name: testimonials
+    description: Testimonials and success stories
+  - name: volunteers
+    description: Volunteer management
+  - name: contact
+    description: Contact messages
+  - name: newsletter
+    description: Newsletter subscriptions
+  - name: auth
+    description: Authentication
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +48,1044 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # Auth endpoints
+  /auth/user:
+    get:
+      operationId: getAuthUser
+      tags: [auth]
+      summary: Get current authenticated user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUser"
+        "401":
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Stats
+  /stats:
+    get:
+      operationId: getSiteStats
+      tags: [stats]
+      summary: Get site-wide impact statistics
+      responses:
+        "200":
+          description: Site statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteStats"
+
+  /stats/live:
+    get:
+      operationId: getLiveStats
+      tags: [stats]
+      summary: Get live donation counters
+      responses:
+        "200":
+          description: Live donation stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LiveStats"
+
+  # Programs
+  /programs:
+    get:
+      operationId: getPrograms
+      tags: [programs]
+      summary: List all NGO programs
+      responses:
+        "200":
+          description: Programs list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Program"
+
+  /programs/{id}:
+    get:
+      operationId: getProgram
+      tags: [programs]
+      summary: Get a single program
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Program
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Program"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Campaigns
+  /campaigns:
+    get:
+      operationId: getCampaigns
+      tags: [campaigns]
+      summary: List campaigns
+      responses:
+        "200":
+          description: Campaigns list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Campaign"
+    post:
+      operationId: createCampaign
+      tags: [campaigns]
+      summary: Create a campaign (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CampaignInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+
+  /campaigns/active:
+    get:
+      operationId: getActiveCampaigns
+      tags: [campaigns]
+      summary: Get active campaigns with progress
+      responses:
+        "200":
+          description: Active campaigns
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Campaign"
+
+  /campaigns/{id}:
+    get:
+      operationId: getCampaign
+      tags: [campaigns]
+      summary: Get a single campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Campaign
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Donations
+  /donations:
+    get:
+      operationId: getDonations
+      tags: [donations]
+      summary: List donations (user's own or admin all)
+      responses:
+        "200":
+          description: Donations list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Donation"
+    post:
+      operationId: createDonation
+      tags: [donations]
+      summary: Create a donation record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DonationInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Donation"
+
+  /donations/recent:
+    get:
+      operationId: getRecentDonations
+      tags: [donations]
+      summary: Get recent public donations feed
+      responses:
+        "200":
+          description: Recent donations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Donation"
+
+  # Blogs
+  /blogs:
+    get:
+      operationId: getBlogs
+      tags: [blogs]
+      summary: List blog posts
+      parameters:
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Blog posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BlogPost"
+    post:
+      operationId: createBlog
+      tags: [blogs]
+      summary: Create a blog post (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BlogPostInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+
+  /blogs/{slug}:
+    get:
+      operationId: getBlog
+      tags: [blogs]
+      summary: Get a blog post by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Blog post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Events
+  /events:
+    get:
+      operationId: getEvents
+      tags: [events]
+      summary: List events
+      responses:
+        "200":
+          description: Events list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+    post:
+      operationId: createEvent
+      tags: [events]
+      summary: Create an event (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+
+  /events/upcoming:
+    get:
+      operationId: getUpcomingEvents
+      tags: [events]
+      summary: Get upcoming events
+      responses:
+        "200":
+          description: Upcoming events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+
+  /events/{id}:
+    get:
+      operationId: getEvent
+      tags: [events]
+      summary: Get a single event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+
+  /events/{id}/register:
+    post:
+      operationId: registerForEvent
+      tags: [events]
+      summary: Register for an event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventRegistrationInput"
+      responses:
+        "201":
+          description: Registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventRegistration"
+
+  # Gallery
+  /gallery:
+    get:
+      operationId: getGallery
+      tags: [gallery]
+      summary: List gallery items
+      parameters:
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Gallery items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GalleryItem"
+
+  # Testimonials
+  /testimonials:
+    get:
+      operationId: getTestimonials
+      tags: [testimonials]
+      summary: List testimonials
+      responses:
+        "200":
+          description: Testimonials
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Testimonial"
+    post:
+      operationId: createTestimonial
+      tags: [testimonials]
+      summary: Submit a testimonial
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TestimonialInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Testimonial"
+
+  # Volunteers
+  /volunteers:
+    get:
+      operationId: getVolunteers
+      tags: [volunteers]
+      summary: List volunteers (admin)
+      responses:
+        "200":
+          description: Volunteers list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Volunteer"
+    post:
+      operationId: registerVolunteer
+      tags: [volunteers]
+      summary: Register as a volunteer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VolunteerInput"
+      responses:
+        "201":
+          description: Registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Volunteer"
+
+  /volunteers/me:
+    get:
+      operationId: getMyVolunteerProfile
+      tags: [volunteers]
+      summary: Get current user's volunteer profile
+      responses:
+        "200":
+          description: Volunteer profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Volunteer"
+        "404":
+          description: Not a volunteer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Contact
+  /contact:
+    post:
+      operationId: sendContactMessage
+      tags: [contact]
+      summary: Send a contact message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactMessageInput"
+      responses:
+        "201":
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactMessage"
+
+  # Newsletter
+  /newsletter/subscribe:
+    post:
+      operationId: subscribeNewsletter
+      tags: [newsletter]
+      summary: Subscribe to newsletter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsletterInput"
+      responses:
+        "201":
+          description: Subscribed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsletterSubscriber"
+
+  # Admin dashboard
+  /admin/dashboard:
+    get:
+      operationId: getAdminDashboard
+      tags: [stats]
+      summary: Get admin dashboard summary
+      responses:
+        "200":
+          description: Admin dashboard data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminDashboard"
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+
+    AuthUser:
+      type: object
+      required: [id, name]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: ["string", "null"]
+        profileImage:
+          type: ["string", "null"]
+        roles:
+          type: array
+          items:
+            type: string
+
+    SiteStats:
+      type: object
+      required: [mealsServed, childrenHelped, oldAgeResidents, volunteers, medicalCamps, treesPlanted, totalDonations, totalDonors]
+      properties:
+        mealsServed:
+          type: integer
+        childrenHelped:
+          type: integer
+        oldAgeResidents:
+          type: integer
+        volunteers:
+          type: integer
+        medicalCamps:
+          type: integer
+        treesPlanted:
+          type: integer
+        totalDonations:
+          type: number
+        totalDonors:
+          type: integer
+
+    LiveStats:
+      type: object
+      required: [totalRaised, donationsToday, activeVolunteers, activeCampaigns]
+      properties:
+        totalRaised:
+          type: number
+        donationsToday:
+          type: integer
+        activeVolunteers:
+          type: integer
+        activeCampaigns:
+          type: integer
+
+    AdminDashboard:
+      type: object
+      required: [totalDonations, totalDonors, totalVolunteers, pendingMessages, recentDonations, upcomingEvents]
+      properties:
+        totalDonations:
+          type: number
+        totalDonors:
+          type: integer
+        totalVolunteers:
+          type: integer
+        pendingMessages:
+          type: integer
+        recentDonations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Donation"
+        upcomingEvents:
+          type: array
+          items:
+            $ref: "#/components/schemas/Event"
+
+    Program:
+      type: object
+      required: [id, title, description, icon, imageUrl, donorsCount, raisedAmount]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+        imageUrl:
+          type: string
+        donorsCount:
+          type: integer
+        raisedAmount:
+          type: number
+        slug:
+          type: ["string", "null"]
+
+    Campaign:
+      type: object
+      required: [id, title, description, goalAmount, raisedAmount, isActive, startDate, programId]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        goalAmount:
+          type: number
+        raisedAmount:
+          type: number
+        isActive:
+          type: boolean
+        startDate:
+          type: string
+        endDate:
+          type: ["string", "null"]
+        programId:
+          type: integer
+        donorsCount:
+          type: integer
+
+    CampaignInput:
+      type: object
+      required: [title, description, goalAmount, startDate, programId]
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        goalAmount:
+          type: number
+        startDate:
+          type: string
+        endDate:
+          type: string
+        programId:
+          type: integer
+
+    Donation:
+      type: object
+      required: [id, amount, currency, paymentMethod, status, isAnonymous, createdAt]
+      properties:
+        id:
+          type: integer
+        donorName:
+          type: ["string", "null"]
+        amount:
+          type: number
+        currency:
+          type: string
+        paymentMethod:
+          type: string
+        status:
+          type: string
+        isAnonymous:
+          type: boolean
+        isRecurring:
+          type: boolean
+        campaignId:
+          type: ["integer", "null"]
+        programId:
+          type: ["integer", "null"]
+        message:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    DonationInput:
+      type: object
+      required: [amount, currency, paymentMethod]
+      properties:
+        amount:
+          type: number
+        currency:
+          type: string
+        paymentMethod:
+          type: string
+        isAnonymous:
+          type: boolean
+        isRecurring:
+          type: boolean
+        campaignId:
+          type: integer
+        programId:
+          type: integer
+        message:
+          type: string
+        donorName:
+          type: string
+        donorEmail:
+          type: string
+        donorPhone:
+          type: string
+
+    BlogPost:
+      type: object
+      required: [id, title, slug, excerpt, content, category, authorName, publishedAt, readTime]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        slug:
+          type: string
+        excerpt:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        authorName:
+          type: string
+        authorImage:
+          type: ["string", "null"]
+        publishedAt:
+          type: string
+        readTime:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+
+    BlogPostInput:
+      type: object
+      required: [title, slug, excerpt, content, category, authorName]
+      properties:
+        title:
+          type: string
+        slug:
+          type: string
+        excerpt:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+        imageUrl:
+          type: string
+        authorName:
+          type: string
+        authorImage:
+          type: string
+        readTime:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+
+    Event:
+      type: object
+      required: [id, title, description, location, startDate, endDate, maxSeats, registeredCount, isActive]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        location:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        maxSeats:
+          type: integer
+        registeredCount:
+          type: integer
+        isActive:
+          type: boolean
+        category:
+          type: string
+
+    EventInput:
+      type: object
+      required: [title, description, location, startDate, endDate, maxSeats]
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        location:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        maxSeats:
+          type: integer
+        category:
+          type: string
+
+    EventRegistration:
+      type: object
+      required: [id, eventId, name, email, createdAt]
+      properties:
+        id:
+          type: integer
+        eventId:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    EventRegistrationInput:
+      type: object
+      required: [name, email]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+
+    GalleryItem:
+      type: object
+      required: [id, title, mediaUrl, mediaType, category]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        mediaUrl:
+          type: string
+        mediaType:
+          type: string
+        category:
+          type: string
+        uploadedAt:
+          type: string
+
+    Testimonial:
+      type: object
+      required: [id, name, role, content, rating, isApproved]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        role:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        content:
+          type: string
+        rating:
+          type: integer
+        isApproved:
+          type: boolean
+        programId:
+          type: ["integer", "null"]
+        createdAt:
+          type: string
+
+    TestimonialInput:
+      type: object
+      required: [name, role, content, rating]
+      properties:
+        name:
+          type: string
+        role:
+          type: string
+        imageUrl:
+          type: string
+        content:
+          type: string
+        rating:
+          type: integer
+        programId:
+          type: integer
+
+    Volunteer:
+      type: object
+      required: [id, name, email, skills, status, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: ["string", "null"]
+        skills:
+          type: array
+          items:
+            type: string
+        availability:
+          type: ["string", "null"]
+        location:
+          type: ["string", "null"]
+        bio:
+          type: ["string", "null"]
+        status:
+          type: string
+        hoursContributed:
+          type: integer
+        createdAt:
+          type: string
+
+    VolunteerInput:
+      type: object
+      required: [name, email, skills]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        skills:
+          type: array
+          items:
+            type: string
+        availability:
+          type: string
+        location:
+          type: string
+        bio:
+          type: string
+
+    ContactMessage:
+      type: object
+      required: [id, name, email, subject, message, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: ["string", "null"]
+        subject:
+          type: string
+        message:
+          type: string
+        createdAt:
+          type: string
+
+    ContactMessageInput:
+      type: object
+      required: [name, email, subject, message]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        subject:
+          type: string
+        message:
+          type: string
+
+    NewsletterSubscriber:
+      type: object
+      required: [id, email, subscribedAt]
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: ["string", "null"]
+        subscribedAt:
+          type: string
+
+    NewsletterInput:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+        name:
+          type: string
