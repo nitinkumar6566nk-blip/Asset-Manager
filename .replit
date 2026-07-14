@@ -21,3 +21,9 @@ timeoutMs = 20000
 
 [nix]
 channel = "stable-25_05"
+
+[userenv]
+
+[userenv.shared]
+RESEND_FROM_EMAIL = "nitinkumar6566nk@gmail.com"
+ADMIN_EMAIL = "nitinkumar6566nk@gmail.com"

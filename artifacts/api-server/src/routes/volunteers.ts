@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { db, volunteersTable } from "@workspace/db";
 import { eq, sql } from "drizzle-orm";
+import { sendVolunteerConfirmation, sendVolunteerNotification } from "../lib/email";
 
 const router = Router();
 
@@ -43,6 +44,7 @@ router.post("/volunteers", async (req, res) => {
   try {
     const user = (req as any).user;
     const { name, email, phone, skills, availability, location, bio } = req.body;
+
     const [volunteer] = await db.insert(volunteersTable).values({
       userId: user?.id,
       name, email, phone,
@@ -50,6 +52,13 @@ router.post("/volunteers", async (req, res) => {
       availability, location, bio,
       status: "pending",
     }).returning();
+
+    // Send confirmation to applicant and notification to admin
+    Promise.all([
+      sendVolunteerConfirmation({ name, email, skills: skills || [] }),
+      sendVolunteerNotification({ name, email, phone, skills: skills || [], availability, location, bio }),
+    ]).catch((err) => req.log.error(err, "Failed to send volunteer emails"));
+
     res.status(201).json(serializeVolunteer(volunteer));
   } catch (err) {
     req.log.error(err, "Failed to register volunteer");

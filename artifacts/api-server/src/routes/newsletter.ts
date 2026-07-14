@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { db, newsletterTable } from "@workspace/db";
+import { sendNewsletterWelcome } from "../lib/email";
 
 const router = Router();
 
@@ -16,6 +17,11 @@ router.post("/newsletter/subscribe", async (req, res) => {
       res.status(200).json({ message: "Already subscribed" });
       return;
     }
+
+    // Send welcome email without blocking
+    sendNewsletterWelcome({ email, name: name || undefined }).catch(
+      (err) => req.log.error(err, "Failed to send newsletter welcome email"),
+    );
 
     res.status(201).json({ ...subscriber, subscribedAt: subscriber.subscribedAt.toISOString() });
   } catch (err) {

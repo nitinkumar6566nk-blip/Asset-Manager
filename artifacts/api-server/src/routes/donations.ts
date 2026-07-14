@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { db, donationsTable } from "@workspace/db";
+import { db, donationsTable, campaignsTable, programsTable } from "@workspace/db";
 import { eq, sql } from "drizzle-orm";
+import { sendDonationReceipt } from "../lib/email";
 
 const router = Router();
 
@@ -72,6 +73,29 @@ router.post("/donations", async (req, res) => {
       programId: programId || null,
       message,
     }).returning();
+
+    // Send receipt email if we have a donor email and they're not anonymous
+    if (donorEmail && !isAnonymous) {
+      // Fetch campaign/program titles for the receipt
+      Promise.all([
+        campaignId
+          ? db.select({ title: campaignsTable.title }).from(campaignsTable).where(eq(campaignsTable.id, campaignId)).then(r => r[0]?.title)
+          : Promise.resolve(undefined),
+        programId
+          ? db.select({ title: programsTable.title }).from(programsTable).where(eq(programsTable.id, programId)).then(r => r[0]?.title)
+          : Promise.resolve(undefined),
+      ]).then(([campaignTitle, programTitle]) =>
+        sendDonationReceipt({
+          donorName,
+          donorEmail,
+          amount: Number(amount),
+          currency: currency || "INR",
+          isRecurring: Boolean(isRecurring),
+          campaignTitle,
+          programTitle,
+        })
+      ).catch((err) => req.log.error(err, "Failed to send donation receipt"));
+    }
 
     res.status(201).json(serializeDonation(donation));
   } catch (err) {
