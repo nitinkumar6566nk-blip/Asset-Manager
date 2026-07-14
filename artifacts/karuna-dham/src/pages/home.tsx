@@ -1,38 +1,10 @@
-import { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
-import { Canvas } from '@react-three/fiber';
 import { Heart, ArrowRight, Activity, Users, Leaf, Stethoscope, Droplets, BookOpen, GraduationCap, Home as HomeIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useGetLiveStats, useGetPrograms, useGetRecentDonations } from '@workspace/api-client-react';
-import Globe from '@/components/ui/Globe';
 import Counter from '@/components/ui/Counter';
-import { WebGLErrorBoundary } from '@/components/ui/WebGLErrorBoundary';
-
-function isWebGLAvailable(): boolean {
-  try {
-    const canvas = document.createElement('canvas');
-    return !!(
-      window.WebGLRenderingContext &&
-      (canvas.getContext('webgl') || canvas.getContext('experimental-webgl'))
-    );
-  } catch {
-    return false;
-  }
-}
-
-function GlobeFallback() {
-  return (
-    <div className="w-full h-full flex items-center justify-center">
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        className="w-64 h-64 rounded-full border border-primary/30 opacity-20"
-        style={{ boxShadow: '0 0 80px 20px rgba(11,143,98,0.15)' }}
-      />
-    </div>
-  );
-}
+import ParticleField from '@/components/ui/ParticleField';
 
 const programIcons: Record<string, any> = {
   'Orphan Children': Users,
@@ -55,17 +27,7 @@ export default function Home() {
       {/* Cinematic Hero Section */}
       <section className="relative w-full h-[100dvh] flex items-center justify-center overflow-hidden bg-foreground">
         <div className="absolute inset-0 z-0">
-          <WebGLErrorBoundary fallback={<GlobeFallback />}>
-            {isWebGLAvailable() ? (
-              <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-                <Suspense fallback={null}>
-                  <Globe />
-                </Suspense>
-              </Canvas>
-            ) : (
-              <GlobeFallback />
-            )}
-          </WebGLErrorBoundary>
+          <ParticleField />
         </div>
         
         {/* Overlay gradient */}
@@ -89,8 +51,8 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-background mb-6 tracking-tight leading-tight"
           >
-            Compassion <br className="hidden md:block" />
-            <span className="text-secondary italic">in Action</span>
+            Karuna Dham <br className="hidden md:block" />
+            <span className="text-secondary italic">Foundation</span>
           </motion.h1>
           
           <motion.p 
