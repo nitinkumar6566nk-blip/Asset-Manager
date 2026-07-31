@@ -200,6 +200,58 @@ export async function sendDonationReceipt(opts: {
   });
 }
 
+// ─── Event Registration Confirmation ─────────────────────────────────────────
+
+export async function sendEventRegistrationConfirmation(opts: {
+  name: string;
+  email: string;
+  eventTitle: string;
+  eventDate: string;
+  eventLocation: string;
+}) {
+  return resend.emails.send({
+    from: FROM,
+    to: opts.email,
+    subject: `You're registered for ${opts.eventTitle} — Karuna Dham Foundation`,
+    html: `
+      <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#1a1a2e">
+        <div style="background:#0B8F62;padding:40px;border-radius:12px 12px 0 0;text-align:center">
+          <h1 style="margin:0;color:#FFD166;font-size:26px">🎉 You're Registered!</h1>
+          <p style="margin:10px 0 0;color:#d1fae5">See you there, ${opts.name}</p>
+        </div>
+        <div style="background:#f9f9f7;padding:40px;border-radius:0 0 12px 12px;border:1px solid #e5e5e0;border-top:none">
+          <div style="background:#fff;border:1px solid #e5e5e0;border-radius:10px;padding:24px;margin-bottom:24px">
+            <table style="width:100%;border-collapse:collapse">
+              <tr>
+                <td style="padding:10px 0;color:#888;font-size:14px;width:110px">Event</td>
+                <td style="padding:10px 0;font-weight:bold;color:#0B8F62">${opts.eventTitle}</td>
+              </tr>
+              <tr style="border-top:1px solid #f0f0f0">
+                <td style="padding:10px 0;color:#888;font-size:14px">Date</td>
+                <td style="padding:10px 0;font-size:14px">${opts.eventDate}</td>
+              </tr>
+              <tr style="border-top:1px solid #f0f0f0">
+                <td style="padding:10px 0;color:#888;font-size:14px">Location</td>
+                <td style="padding:10px 0;font-size:14px">${opts.eventLocation}</td>
+              </tr>
+            </table>
+          </div>
+          <p style="font-size:15px;line-height:1.8;color:#444">
+            Please arrive 15 minutes early. Carry a valid ID and this email as your confirmation.
+          </p>
+          <p style="font-size:15px;line-height:1.8;color:#444">
+            Questions? Reply to this email or call us at <strong>+91 78277 72775</strong>.
+          </p>
+          <hr style="border:none;border-top:1px solid #e5e5e0;margin:24px 0" />
+          <p style="font-size:12px;color:#aaa;text-align:center;margin:0">
+            Karuna Dham Foundation — Compassion, Humanity, Care &amp; Service
+          </p>
+        </div>
+      </div>
+    `,
+  });
+}
+
 // ─── Volunteer Application ────────────────────────────────────────────────────
 
 export async function sendVolunteerConfirmation(opts: {

@@ -149,16 +149,28 @@ export default function Contact() {
                 </div>
               </div>
 
-              {/* Map Placeholder */}
-              <div className="w-full h-[300px] bg-muted rounded-3xl overflow-hidden border border-border relative flex items-center justify-center">
-                <div className="absolute inset-0 bg-primary/5" />
-                <div className="text-center z-10">
-                  <MapPin size={48} className="mx-auto text-primary/40 mb-2" />
-                  <p className="text-muted-foreground font-medium">
-                    Google Maps Embed Placeholder
-                  </p>
-                </div>
+              {/* OpenStreetMap embed — New Delhi */}
+              <div className="w-full h-[300px] rounded-3xl overflow-hidden border border-border shadow-sm">
+                <iframe
+                  title="Karuna Dham Foundation Location"
+                  width="100%"
+                  height="100%"
+                  frameBorder="0"
+                  scrolling="no"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=77.1500%2C28.6100%2C77.2500%2C28.6900&layer=mapnik&marker=28.6500%2C77.2000"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                />
               </div>
+              <a
+                href="https://www.openstreetmap.org/?mlat=28.65&mlon=77.20#map=14/28.65/77.20"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-muted-foreground hover:text-primary transition-colors -mt-4 inline-block"
+              >
+                View larger map ↗
+              </a>
             </div>
 
             {/* Form & FAQ */}

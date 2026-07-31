@@ -11,6 +11,7 @@ const serializeVolunteer = (v: typeof volunteersTable.$inferSelect) => ({
   createdAt: v.createdAt.toISOString(),
 });
 
+// ─── List all volunteers (admin) ───────────────────────────────────────────────
 router.get("/volunteers", async (req, res) => {
   try {
     const volunteers = await db
@@ -24,6 +25,7 @@ router.get("/volunteers", async (req, res) => {
   }
 });
 
+// ─── Current user's volunteer profile ─────────────────────────────────────────
 router.get("/volunteers/me", async (req, res) => {
   try {
     const user = (req as any).user;
@@ -40,23 +42,49 @@ router.get("/volunteers/me", async (req, res) => {
   }
 });
 
+// ─── Apply as volunteer ────────────────────────────────────────────────────────
 router.post("/volunteers", async (req, res) => {
   try {
     const user = (req as any).user;
     const { name, email, phone, skills, availability, location, bio } = req.body;
 
-    const [volunteer] = await db.insert(volunteersTable).values({
-      userId: user?.id,
-      name, email, phone,
-      skills: skills || [],
-      availability, location, bio,
-      status: "pending",
-    }).returning();
+    // Basic validation
+    if (!name || !email || !phone || !availability || !location) {
+      res.status(400).json({ error: "name, email, phone, availability and location are required" });
+      return;
+    }
 
-    // Send confirmation to applicant and notification to admin
+    // Prevent duplicate applications by email
+    const [existing] = await db
+      .select({ id: volunteersTable.id })
+      .from(volunteersTable)
+      .where(eq(volunteersTable.email, email))
+      .limit(1);
+
+    if (existing) {
+      res.status(409).json({ error: "An application with this email already exists" });
+      return;
+    }
+
+    const [volunteer] = await db
+      .insert(volunteersTable)
+      .values({
+        userId: user?.id ?? null,
+        name,
+        email,
+        phone,
+        skills: Array.isArray(skills) ? skills : [],
+        availability,
+        location,
+        bio: bio ?? null,
+        status: "pending",
+      })
+      .returning();
+
+    // Send confirmation to applicant + notification to admin (non-blocking)
     Promise.all([
-      sendVolunteerConfirmation({ name, email, skills: skills || [] }),
-      sendVolunteerNotification({ name, email, phone, skills: skills || [], availability, location, bio }),
+      sendVolunteerConfirmation({ name, email, skills: Array.isArray(skills) ? skills : [] }),
+      sendVolunteerNotification({ name, email, phone, skills: Array.isArray(skills) ? skills : [], availability, location, bio }),
     ]).catch((err) => req.log.error(err, "Failed to send volunteer emails"));
 
     res.status(201).json(serializeVolunteer(volunteer));

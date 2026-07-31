@@ -9,3 +9,4 @@ export * from "./testimonials";
 export * from "./volunteers";
 export * from "./contact";
 export * from "./newsletter";
+export * from "./impact";
