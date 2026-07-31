@@ -7,8 +7,7 @@ const FROM =
   "Karuna Dham Foundation <noreply@karunadham.org>";
 const ADMIN_EMAIL =
   process.env.ADMIN_EMAIL ??
-  process.env.RESEND_FROM_EMAIL ??
-  "admin@karunadham.org";
+  "karunadhamfoundation@gmail.com";
 
 // ─── Contact Form ─────────────────────────────────────────────────────────────
 
