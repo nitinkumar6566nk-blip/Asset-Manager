@@ -1,9 +1,14 @@
-import { Resend } from 'resend';
+import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const FROM = process.env.RESEND_FROM_EMAIL ?? 'Karuna Dham Foundation <noreply@karunadham.org>';
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? process.env.RESEND_FROM_EMAIL ?? 'admin@karunadham.org';
+const FROM =
+  process.env.RESEND_FROM_EMAIL ??
+  "Karuna Dham Foundation <noreply@karunadham.org>";
+const ADMIN_EMAIL =
+  process.env.ADMIN_EMAIL ??
+  process.env.RESEND_FROM_EMAIL ??
+  "admin@karunadham.org";
 
 // ─── Contact Form ─────────────────────────────────────────────────────────────
 
@@ -14,7 +19,7 @@ export async function sendContactConfirmation(opts: {
 }) {
   return resend.emails.send({
     from: FROM,
-    to: opts.email,
+    to: opts.email!,
     subject: `We received your message — ${opts.subject}`,
     html: `
       <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#1a1a2e">
@@ -58,7 +63,7 @@ export async function sendContactNotification(opts: {
         <table style="width:100%;border-collapse:collapse">
           <tr><td style="padding:8px 0;font-weight:bold;width:90px">Name</td><td>${opts.name}</td></tr>
           <tr><td style="padding:8px 0;font-weight:bold">Email</td><td><a href="mailto:${opts.email}">${opts.email}</a></td></tr>
-          ${opts.phone ? `<tr><td style="padding:8px 0;font-weight:bold">Phone</td><td>${opts.phone}</td></tr>` : ''}
+          ${opts.phone ? `<tr><td style="padding:8px 0;font-weight:bold">Phone</td><td>${opts.phone}</td></tr>` : ""}
           <tr><td style="padding:8px 0;font-weight:bold">Subject</td><td>${opts.subject}</td></tr>
         </table>
         <div style="margin-top:16px;padding:16px;background:#fff;border-radius:6px;border-left:4px solid #0B8F62">
@@ -72,11 +77,14 @@ export async function sendContactNotification(opts: {
 
 // ─── Newsletter ───────────────────────────────────────────────────────────────
 
-export async function sendNewsletterWelcome(opts: { email: string; name?: string }) {
+export async function sendNewsletterWelcome(opts: {
+  email: string;
+  name?: string;
+}) {
   return resend.emails.send({
     from: FROM,
     to: opts.email,
-    subject: 'Welcome to the Karuna Dham Newsletter 🌿',
+    subject: "Welcome to the Karuna Dham Newsletter 🌿",
     html: `
       <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#1a1a2e">
         <div style="background:linear-gradient(135deg,#0B8F62,#16a34a);padding:48px 40px;border-radius:12px 12px 0 0;text-align:center">
@@ -85,7 +93,7 @@ export async function sendNewsletterWelcome(opts: { email: string; name?: string
         </div>
         <div style="background:#f9f9f7;padding:40px;border-radius:0 0 12px 12px;border:1px solid #e5e5e0;border-top:none">
           <h2 style="color:#0B8F62;margin:0 0 16px">
-            Welcome${opts.name ? `, ${opts.name}` : ''}! 💚
+            Welcome${opts.name ? `, ${opts.name}` : ""}! 💚
           </h2>
           <p style="font-size:16px;line-height:1.8;color:#444">
             Thank you for joining our community of change-makers. You'll receive our monthly newsletter with:
@@ -124,13 +132,13 @@ export async function sendDonationReceipt(opts: {
   campaignTitle?: string;
   programTitle?: string;
 }) {
-  const symbol = opts.currency === 'INR' ? '₹' : '$';
-  const formattedAmount = `${symbol}${opts.amount.toLocaleString('en-IN')}`;
+  const symbol = opts.currency === "INR" ? "₹" : "$";
+  const formattedAmount = `${symbol}${opts.amount.toLocaleString("en-IN")}`;
   const forText = opts.campaignTitle
     ? `<strong>${opts.campaignTitle}</strong>`
     : opts.programTitle
-    ? `our <strong>${opts.programTitle}</strong> program`
-    : 'our general fund';
+      ? `our <strong>${opts.programTitle}</strong> program`
+      : "our general fund";
 
   return resend.emails.send({
     from: FROM,
@@ -154,11 +162,15 @@ export async function sendDonationReceipt(opts: {
                 <td style="padding:10px 0;color:#888;font-size:14px">Directed To</td>
                 <td style="padding:10px 0;text-align:right;font-size:14px">${forText}</td>
               </tr>
-              ${opts.isRecurring ? `
+              ${
+                opts.isRecurring
+                  ? `
               <tr style="border-top:1px solid #f0f0f0">
                 <td style="padding:10px 0;color:#888;font-size:14px">Type</td>
                 <td style="padding:10px 0;text-align:right;font-size:14px;color:#0B8F62;font-weight:600">🔄 Monthly Recurring</td>
-              </tr>` : ''}
+              </tr>`
+                  : ""
+              }
             </table>
           </div>
           <p style="font-size:16px;line-height:1.8;color:#444">
@@ -199,7 +211,7 @@ export async function sendVolunteerConfirmation(opts: {
   return resend.emails.send({
     from: FROM,
     to: opts.email,
-    subject: 'Your volunteer application — Karuna Dham Foundation',
+    subject: "Your volunteer application — Karuna Dham Foundation",
     html: `
       <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#1a1a2e">
         <div style="background:#0B8F62;padding:40px;border-radius:12px 12px 0 0;text-align:center">
@@ -212,7 +224,7 @@ export async function sendVolunteerConfirmation(opts: {
             every Monday and will reach out within 5–7 days to schedule an orientation call.
           </p>
           <p style="font-size:15px;line-height:1.7;color:#555">
-            <strong>Your offered skills:</strong> ${opts.skills.join(', ') || 'General volunteering'}
+            <strong>Your offered skills:</strong> ${opts.skills.join(", ") || "General volunteering"}
           </p>
           <p style="font-size:15px;line-height:1.7;color:#555">
             In the meantime, you can attend any of our upcoming public events — 
@@ -257,14 +269,18 @@ export async function sendVolunteerNotification(opts: {
           <tr><td style="padding:8px 0;font-weight:bold">Email</td><td><a href="mailto:${opts.email}">${opts.email}</a></td></tr>
           <tr><td style="padding:8px 0;font-weight:bold">Phone</td><td>${opts.phone}</td></tr>
           <tr><td style="padding:8px 0;font-weight:bold">Location</td><td>${opts.location}</td></tr>
-          <tr><td style="padding:8px 0;font-weight:bold">Skills</td><td>${opts.skills.join(', ')}</td></tr>
+          <tr><td style="padding:8px 0;font-weight:bold">Skills</td><td>${opts.skills.join(", ")}</td></tr>
           <tr><td style="padding:8px 0;font-weight:bold">Availability</td><td>${opts.availability}</td></tr>
         </table>
-        ${opts.bio ? `
+        ${
+          opts.bio
+            ? `
         <div style="margin-top:16px;padding:16px;background:#fff;border-radius:6px;border-left:4px solid #0B8F62">
           <strong>Bio:</strong>
           <p style="margin:8px 0 0">${opts.bio}</p>
-        </div>` : ''}
+        </div>`
+            : ""
+        }
       </div>
     `,
   });

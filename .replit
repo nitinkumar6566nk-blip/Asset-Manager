@@ -25,5 +25,8 @@ channel = "stable-25_05"
 [userenv]
 
 [userenv.shared]
-RESEND_FROM_EMAIL = "nitinkumar6566nk@gmail.com"
-ADMIN_EMAIL = "nitinkumar6566nk@gmail.com"
+RESEND_FROM_EMAIL = "karunadhamfoundation@gmail.com"
+ADMIN_EMAIL = "karunadhamfoundation@gmail.com"
+
+[objectStorage]
+defaultBucketID = "replit-objstore-bc13177a-5870-4add-8ff0-025fd3803196"
