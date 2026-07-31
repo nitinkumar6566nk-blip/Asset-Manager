@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "buildCommand": "pnpm install && pnpm --filter @workspace/karuna-dham run build",
+  "outputDirectory": "artifacts/karuna-dham/dist/public",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index" }
+  ],
+  "functions": {
+    "api/index.ts": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "PNPM_VERSION": "10"
+  }
+}
